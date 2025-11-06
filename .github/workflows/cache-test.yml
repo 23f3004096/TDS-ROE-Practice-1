@@ -1,0 +1,29 @@
+name: Cache Speed Test
+
+on:
+  workflow_dispatch:   # Allows manual trigger
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Restore cache
+        id: cache-step
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/sample
+          key: cache-e7824fd
+
+      - name: prime-cache-e7824fd
+        run: |
+          echo "Cache result: ${{ steps.cache-step.outputs.cache-hit }}"
+
+      - name: Simulate dependency install
+        run: |
+          mkdir -p ~/.cache/sample
+          echo "demo file" > ~/.cache/sample/file.txt
